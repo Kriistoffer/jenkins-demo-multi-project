@@ -33,7 +33,7 @@ pipeline {
                         echo "Starting with repository ${dotnet} now..."
                         sh "mkdir -p ${dotnet}"
                         dir("${dotnet}") {
-                            sh "dotnet --outdated"
+                            sh "nuget install packages.config"
                         }
                     }
                 }
