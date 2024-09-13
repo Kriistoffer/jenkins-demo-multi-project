@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo 'Building...'
                 script {
-                    env.node_repositories.tokenize(",").each { npm =>
+                    env.node_repositories.tokenize(",").each { npm ->
                         echo "Repository is: ${npm}"
                         }
                     }
