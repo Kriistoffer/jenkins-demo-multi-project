@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         node_projects = "frontend-gui,frontend-components"
-        dotnet_repositories = "jenkins-demo-backend"
+        dotnet_projects = "jenkins-demo-backend"
     }
     stages {
         stage("Build node based repositories") {
@@ -26,11 +26,11 @@ pipeline {
             }
         }
 
-        // stage("Build dotnet repositories") {
+        // stage("Build dotnet based repositories") {
         //     steps {
         //         echo "Building..."
         //         script {
-        //             env.dotnet_repositories.tokenize(",").each { dotnet ->
+        //             env.dotnet_projects.tokenize(",").each { dotnet ->
         //                 echo "Starting with repository ${dotnet} now..."
         //                 sh "mkdir -p ${dotnet}"
         //                 dir("${dotnet}") {
