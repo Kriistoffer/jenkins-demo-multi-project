@@ -1,0 +1,14 @@
+logs 
+*.log
+
+build/Release
+
+node_modules/
+
+dist/
+
+.npm
+
+.vs/
+
+

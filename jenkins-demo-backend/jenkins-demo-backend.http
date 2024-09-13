@@ -1,0 +1,6 @@
+@jenkins_demo_backend_HostAddress = http://localhost:5227
+
+GET {{jenkins_demo_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
