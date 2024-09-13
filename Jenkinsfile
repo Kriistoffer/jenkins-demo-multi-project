@@ -5,7 +5,7 @@ pipeline {
         dotnetsdk "dotnet"
     }
     environment {
-        node_projects = ""
+        node_projects = "frontend-gui,frontend-components"
         dotnet_projects = "jenkins-demo-backend"
     }
     stages {
