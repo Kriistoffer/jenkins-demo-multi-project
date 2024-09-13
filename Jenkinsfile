@@ -48,10 +48,23 @@ pipeline {
                     env.node_repositories.tokenize(",").each { npm -> 
                         echo "Checking ${npm}..."
                         dir("${npm}") {
-                            sh "npm outdated --json > ../npm_version_check_${npm}.json || true" 
-                            def result = readJSON(file: "../npm_version_check_${npm}.json")
-                            echo "${result}"
-                            // echo "Number of vulnerabilities found: ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info)."
+                            sh "npm outdated || true" 
+                        }
+                    }
+                }
+            }
+        }
+
+        stage("Audit check") {
+            steps {
+                echo "Auditing repositories..."
+                script {
+                    env.node_repositories.tokenize(",").each { npm -> 
+                        echo "Auditing ${npm}..."
+                        dir("${npm}") {
+                            sh "npm audit --json > ../npm_audit_${npm}.json || true" 
+                            def result = readJSON(file: "../npm_audit_${npm}.json")
+                            echo "Number of vulnerabilities found: ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info)."
                         }
                     }
                 }
