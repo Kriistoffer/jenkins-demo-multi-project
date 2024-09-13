@@ -50,7 +50,8 @@ pipeline {
                         dir("${npm}") {
                             sh "npm outdated --json > ../npm_version_check_${npm}.json || true" 
                             def result = readJSON(file: "../npm_version_check_${npm}.json")
-                            echo "Number of vulnerabilities found: ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info)."
+                            echo "${result}"
+                            // echo "Number of vulnerabilities found: ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info)."
                         }
                     }
                 }
