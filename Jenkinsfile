@@ -13,7 +13,12 @@ pipeline {
                 echo 'Building...'
                 script {
                     env.node_repositories.tokenize(",").each { npm ->
-                        echo "Repository is: ${npm}"
+                        echo "Starting with repository ${npm} now..."
+                        sh "mkdir -p ${npm}"
+                        sh "cd ${npm}"
+                        sh "npm install"
+                        sh "cd .."
+                        echo "Finished building ${npm}."
                     }
                 }
             }
