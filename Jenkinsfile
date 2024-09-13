@@ -4,19 +4,13 @@ pipeline {
         nodejs "nodejs"
     }
     environment {
-        node_repositories = 'frontend-gui,frontend-components'
-        dotnet_repositories = 'jenkins-demo-backend'
+        node_repositories = "frontend-gui,frontend-components"
+        dotnet_repositories = "jenkins-demo-backend"
     }
     stages {
-        stage('Build node repositories') {
+        stage("Build node repositories") {
             steps {
-                echo 'Building...'
-                // sh 'mkdir -p frontend-gui'
-                // sh 'pwd'
-                // dir('frontend-gui') {
-                //     sh 'pwd'
-                // }
-                // sh 'pwd'
+                echo "Building..."
                 script {
                     env.node_repositories.tokenize(",").each { npm ->
                         echo "Starting with repository ${npm} now..."
@@ -26,6 +20,20 @@ pipeline {
 
                         }
                         echo "Finished building ${npm}."
+                    }
+                }
+            }
+        }
+        stage("Build dotnet repositories") {
+            steps {
+                echo "Building..."
+                script {
+                    env.dotnet_repositories.tokenize(",").each { dotnet ->
+                        echo "Starting with repository ${dotnet} now..."
+                        sh "mkdir -p ${dotnet}"
+                        dir("${dotnet}") {
+                            sh "dotnet --outdated"
+                        }
                     }
                 }
             }
