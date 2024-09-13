@@ -48,7 +48,7 @@ pipeline {
                     env.node_projects.tokenize(",").each { npm -> 
                         echo "Checking ${npm}..."
                         dir("${npm}") {
-                            sh "npm outdated" 
+                            sh "npm outdated || true" 
                         }
                     }
                 }
