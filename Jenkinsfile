@@ -12,7 +12,8 @@ pipeline {
             steps {
                 echo 'Building...'
                 sh 'mkdir -p frontend-gui'
-                sh 'cd frontend-gui'
+                sh 'pwd'
+                sh 'cd ./frontend-gui'
                 sh 'pwd'
                 // script {
                 //     env.node_repositories.tokenize(",").each { npm ->
