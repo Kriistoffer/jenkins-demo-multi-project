@@ -25,25 +25,40 @@ pipeline {
                 }
             }
         }
-        stage("Build dotnet repositories") {
+
+        // stage("Build dotnet repositories") {
+        //     steps {
+        //         echo "Building..."
+        //         script {
+        //             env.dotnet_repositories.tokenize(",").each { dotnet ->
+        //                 echo "Starting with repository ${dotnet} now..."
+        //                 sh "mkdir -p ${dotnet}"
+        //                 dir("${dotnet}") {
+        //                     sh "nuget install packages.config"
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        
+        stage("Dependency version check") {
             steps {
-                echo "Building..."
+                echo "Checking versions..."
                 script {
-                    env.dotnet_repositories.tokenize(",").each { dotnet ->
-                        echo "Starting with repository ${dotnet} now..."
-                        sh "mkdir -p ${dotnet}"
-                        dir("${dotnet}") {
-                            sh "C:\\tools\\nuget.exe nuget install packages.config"
+                    env.node_repositories.tokenize(",").each { npm -> 
+                        echo "Checking ${npm}..."
+                        dir("${npm}") {
+                            sh "npm outdated --json > ../npm_audit_${npm}.json" 
                         }
                     }
                 }
             }
         }
     }
-    post {
-        always {
-            cleanWs()
-        }
-    }
+    // post {
+    //     always {
+    //         cleanWs()
+    //     }
+    // }
         
 }
