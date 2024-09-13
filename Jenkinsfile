@@ -2,6 +2,7 @@ pipeline {
     agent any 
     tools {
         nodejs "nodejs"
+        dotnet "dotnet"
     }
     environment {
         node_repositories = "frontend-gui,frontend-components"
