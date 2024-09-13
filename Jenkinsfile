@@ -18,14 +18,12 @@ pipeline {
                         sh "mkdir -p ${npm}"
                         dir("${npm}") {
                             sh "npm install"
-
                         }
                         echo "Finished installing ${npm}."
                     }
                 }
             }
         }
-
         // stage("Build dotnet based repositories") {
         //     steps {
         //         echo "Building..."
@@ -40,7 +38,6 @@ pipeline {
         //         }
         //     }
         // }
-        
         stage("Dependency version check") {
             steps {
                 echo "Checking versions..."
@@ -54,7 +51,6 @@ pipeline {
                 }
             }
         }
-
         stage("Audit check") {
             steps {
                 echo "Auditing repositories..."
