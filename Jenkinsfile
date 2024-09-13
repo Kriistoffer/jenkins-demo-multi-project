@@ -11,16 +11,21 @@ pipeline {
         stage('Build node repositories') {
             steps {
                 echo 'Building...'
-                script {
-                    env.node_repositories.tokenize(",").each { npm ->
-                        echo "Starting with repository ${npm} now..."
-                        sh "mkdir -p ${npm}"
-                        sh "cd ${npm}"
-                        sh "npm install"
-                        sh "cd .."
-                        echo "Finished building ${npm}."
-                    }
-                }
+                sh 'mkdir -p frontend-gui'
+                sh 'cd frontend-gui'
+                sh 'npm install'
+                sh 'cd ..'
+                echo 'Finished installing frontend-gui'
+                // script {
+                //     env.node_repositories.tokenize(",").each { npm ->
+                //         echo "Starting with repository ${npm} now..."
+                //         sh "mkdir -p ${npm}"
+                //         sh "cd ${npm}"
+                //         sh "npm install"
+                //         sh "cd .."
+                //         echo "Finished building ${npm}."
+                //     }
+                // }
             }
         }
     }
