@@ -12,10 +12,6 @@ pipeline {
             steps {
                 echo 'Building...'
                 sh 'mkdir -p frontend-gui'
-                sh 'cd frontend-gui'
-                sh 'npm install'
-                sh 'cd ..'
-                echo 'Finished installing frontend-gui'
                 // script {
                 //     env.node_repositories.tokenize(",").each { npm ->
                 //         echo "Starting with repository ${npm} now..."
@@ -31,12 +27,7 @@ pipeline {
     }
     post {
         always {
-            cleanWs(cleanWhenNotBuilt: true,
-                    deleteDirs: true,
-                    disableDeferredWipeout: true,
-                    notFailBuild: true,
-                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                               [pattern: '.propsfile', type: 'EXCLUDE']])
+            cleanWs()
         }
     }
         
