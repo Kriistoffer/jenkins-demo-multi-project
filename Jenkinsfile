@@ -5,22 +5,22 @@ pipeline {
         dotnetsdk "dotnet"
     }
     environment {
-        node_repositories = "frontend-gui,frontend-components"
+        node_projects = "frontend-gui,frontend-components"
         dotnet_repositories = "jenkins-demo-backend"
     }
     stages {
-        stage("Build node repositories") {
+        stage("Build node based repositories") {
             steps {
                 echo "Building..."
                 script {
-                    env.node_repositories.tokenize(",").each { npm ->
-                        echo "Starting with repository ${npm} now..."
+                    env.node_projects.tokenize(",").each { npm ->
+                        echo "Installing ${npm} now..."
                         sh "mkdir -p ${npm}"
                         dir("${npm}") {
                             sh "npm install"
 
                         }
-                        echo "Finished building ${npm}."
+                        echo "Finished installing ${npm}."
                     }
                 }
             }
@@ -45,10 +45,10 @@ pipeline {
             steps {
                 echo "Checking versions..."
                 script {
-                    env.node_repositories.tokenize(",").each { npm -> 
+                    env.node_projects.tokenize(",").each { npm -> 
                         echo "Checking ${npm}..."
                         dir("${npm}") {
-                            sh "npm outdated || true" 
+                            sh "npm outdated" 
                         }
                     }
                 }
@@ -59,7 +59,7 @@ pipeline {
             steps {
                 echo "Auditing repositories..."
                 script {
-                    env.node_repositories.tokenize(",").each { npm -> 
+                    env.node_projects.tokenize(",").each { npm -> 
                         echo "Auditing ${npm}..."
                         dir("${npm}") {
                             sh "npm audit --json > ../npm_audit_${npm}.json || true" 
