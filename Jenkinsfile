@@ -14,11 +14,10 @@ pipeline {
                 script {
                     env.node_repositories.tokenize(",").each { npm ->
                         echo "Repository is: ${npm}"
-                        }
                     }
                 }
             }
         }
-        
     }
+        
 }
