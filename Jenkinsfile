@@ -11,22 +11,23 @@ pipeline {
         stage('Build node repositories') {
             steps {
                 echo 'Building...'
-                sh 'mkdir -p frontend-gui'
-                sh 'pwd'
-                dir('frontend-gui') {
-                    sh 'pwd'
-                }
-                sh 'pwd'
-                // script {
-                //     env.node_repositories.tokenize(",").each { npm ->
-                //         echo "Starting with repository ${npm} now..."
-                //         sh "mkdir -p ${npm}"
-                //         sh "cd ${npm}"
-                //         sh "npm install"
-                //         sh "cd .."
-                //         echo "Finished building ${npm}."
-                //     }
+                // sh 'mkdir -p frontend-gui'
+                // sh 'pwd'
+                // dir('frontend-gui') {
+                //     sh 'pwd'
                 // }
+                // sh 'pwd'
+                script {
+                    env.node_repositories.tokenize(",").each { npm ->
+                        echo "Starting with repository ${npm} now..."
+                        sh "mkdir -p ${npm}"
+                        dir("${npm}") {
+                            sh "npm install"
+
+                        }
+                        echo "Finished building ${npm}."
+                    }
+                }
             }
         }
     }
