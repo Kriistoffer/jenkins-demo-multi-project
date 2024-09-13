@@ -4,8 +4,8 @@ pipeline {
         nodejs "nodejs"
     }
     environment {
-        node_repositories['/frontend-gui', '/frontend-components']
-        dotnet_repositories['/jenkins-demo-backend']
+        node_repositories = ['/frontend-gui', '/frontend-components']
+        dotnet_repositories = ['/jenkins-demo-backend']
     }
     stages {
         stage('Build node repositories') {
