@@ -48,7 +48,7 @@ pipeline {
                     env.node_repositories.tokenize(",").each { npm -> 
                         echo "Checking ${npm}..."
                         dir("${npm}") {
-                            sh "npm outdated --json || true > ../npm_audit_${npm}.json" 
+                            sh "npm outdated --json > ../npm_audit_${npm}.json || true" 
                         }
                     }
                 }
