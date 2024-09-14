@@ -45,7 +45,8 @@ pipeline {
                     env.node_projects.tokenize(",").each { npm -> 
                         echo "Checking ${npm}..."
                         dir("${npm}") {
-                            sh "npm outdated || true" 
+                            def output = sh "npm outdated || true" 
+                            slackSend(channel: "#team1-depencdency_check", message: "${output}")
                         }
                     }
                 }
