@@ -45,8 +45,9 @@ pipeline {
                     env.node_projects.tokenize(",").each { npm -> 
                         echo "Checking ${npm}..."
                         dir("${npm}") {
-                            def output = sh "npm outdated || true" 
-                            echo "${output}"
+                            sh "npm outdated > ../npm_outdated_${npm}.txt || true" 
+                            def result = readFile(file: "../npm_outdated_${npm}.txt")
+                            echo "${result}"
                             // slackSend(channel: "#team1-dependency_check", message: "${output}")
                         }
                     }
