@@ -91,11 +91,16 @@ pipeline {
         // }
     }
     post {
+        success {
+            slackSend(channel: "#team1-dependency_check", color: "good", message: "${JOB_NAME} has finished running. Logs available at ${BUILD_URL}execution/node/3/ws/logs/${BUILD_NUMBER}")
+        }
+        failure {
+            slackSend(channel: "#team1-dependency_check", color: "bad", message: "Something caused a failure when running ${JOB_NAME}.")
+        }
         always {
             // cleanWs(patterns: [[pattern: "**/logs/**", type: 'EXCLUDE']])
             // cleanWs()
-            echo "Finished running pipeline."
-            slackSend(channel: "#team1-dependency_check", color: "good", message: "Complete logs available at ${BUILD_URL}execution/node/3/ws/logs/${BUILD_NUMBER}")
+            echo "Finished running."
         }
     }
 
