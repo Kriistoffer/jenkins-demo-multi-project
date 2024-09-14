@@ -92,8 +92,7 @@ pipeline {
     }
     post {
         always {
-            cleanWs(patterns: [[pattern: "**/logs/**", type: 'EXCLUDE'],
-                               [pattern: "**/.git/**", type: 'EXCLUDE']])
+            cleanWs(patterns: [[pattern: "logs/**", type: 'EXCLUDE']])
         }
     }
 
