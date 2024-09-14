@@ -95,6 +95,7 @@ pipeline {
             // cleanWs(patterns: [[pattern: "**/logs/**", type: 'EXCLUDE']])
             // cleanWs()
             echo "Finished running pipeline."
+            echo "Complete logs available at ${BUILD_URL}"
         }
     }
 
