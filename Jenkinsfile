@@ -61,7 +61,7 @@ pipeline {
                             sh "npm audit --json > ../npm_audit_${npm}.json || true" 
                             def result = readJSON(file: "../npm_audit_${npm}.json")
                             echo "Number of vulnerabilities found in project '${npm}': ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info)."
-                            slackSend(channel: "#team1-dependency_check", message: "Number of vulnerabilities found in project '${npm}': ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info).")
+                            slackSend(channel: "#team1-dependency_check", color: "good", message: "Number of vulnerabilities found in project '${npm}': ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info).")
                         }
                     }
                 }
