@@ -34,7 +34,7 @@ pipeline {
 
                         dir("${project}") {
                             sh "npm outdated --json > ../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json || true"
-                            def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json.json")
+                            def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json")
                             sh "npm audit --json > ../logs/${BUILD_NUMBER}/${project}_vulnerabilities.json || true"
                             def audit_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_vulnerabilities.json")
                             slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}")
