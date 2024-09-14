@@ -36,8 +36,9 @@ pipeline {
                             def outdated_output = readJSON(file: "../npm_outdated_${project}.json")
                             sh "npm audit --json > ../npm_audit_${project}.json || true"
                             def audit_output = readJSON(file: "../npm_audit_${project}.json")
-                            slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}")
-                            slackSend(channel: "#team1-dependency_check", message: "- ${project} - Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
+                            slackSend(channel: "#team1-dependency_check", message: "${project}")
+                            slackSend(channel: "#team1-dependency_check", message: "Outdated dependencies: ${outdated_output.size()}")
+                            slackSend(channel: "#team1-dependency_check", message: "Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
                         }
                     }
                 }
