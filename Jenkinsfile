@@ -47,8 +47,8 @@ pipeline {
                         dir("${npm}") {
                             sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
                             def result = readJSON(file: "../npm_outdated_${npm}.json")
-                            // echo "${result}"
-                            slackSend(channel: "#team1-dependency_check", message: "${output}")
+                            echo "${result}"
+                            // slackSend(channel: "#team1-dependency_check", message: "${output}")
                         }
                     }
                 }
