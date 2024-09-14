@@ -27,18 +27,18 @@ pipeline {
         stage("Node: version and audit check") {
             steps {
                 echo "Auditing and checking dependency versions..."
+                sh "mkdir -p logs/${BUILD_NUMBER}"
                 script {
                     env.node_projects.tokenize(",").each { project ->
                         echo "Checking ${project}..."
 
                         dir("${project}") {
-                            sh "npm outdated --json > ../npm_outdated_${project}.json || true" 
-                            def outdated_output = readJSON(file: "../npm_outdated_${project}.json")
+                            sh "npm outdated --json > ../logs/${BUILD_NUMBER}/npm_outdated_${project}.json || true" 
+                            def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/npm_outdated_${project}.json")
                             sh "npm audit --json > ../npm_audit_${project}.json || true"
                             def audit_output = readJSON(file: "../npm_audit_${project}.json")
-                            slackSend(channel: "#team1-dependency_check", color: "good", message: "- ${project} -")
-                            slackSend(channel: "#team1-dependency_check", message: "Outdated dependencies: ${outdated_output.size()}")
-                            slackSend(channel: "#team1-dependency_check", message: "Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
+                            slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}")
+                            slackSend(channel: "#team1-dependency_check", message: "- ${project} - Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
                         }
                     }
                 }
@@ -92,7 +92,7 @@ pipeline {
     }
     post {
         always {
-            cleanWs()
+            // cleanWs()
         }
     }
         
