@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent any
     tools {
         nodejs "nodejs"
         dotnetsdk "dotnet"
@@ -33,7 +33,7 @@ pipeline {
                         echo "Checking ${project}..."
 
                         dir("${project}") {
-                            sh "npm outdated --json > ../logs/${BUILD_NUMBER}/npm_outdated_${project}.json || true" 
+                            sh "npm outdated --json > ../logs/${BUILD_NUMBER}/npm_outdated_${project}.json || true"
                             def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/npm_outdated_${project}.json")
                             sh "npm audit --json > ../npm_audit_${project}.json || true"
                             def audit_output = readJSON(file: "../npm_audit_${project}.json")
@@ -62,10 +62,10 @@ pipeline {
         //     steps {
         //         echo "Checking versions..."
         //         script {
-        //             env.node_projects.tokenize(",").each { npm -> 
+        //             env.node_projects.tokenize(",").each { npm ->
         //                 echo "Checking ${npm}..."
         //                 dir("${npm}") {
-        //                    sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
+        //                    sh "npm outdated --json > ../npm_outdated_${npm}.json || true"
         //                    def result = readJSON(file: "../npm_outdated_${npm}.json")
         //                    slackSend(channel: "#team1-dependency_check", message: "- ${npm} - Outdated dependencies: ${result.size()}")
         //                    slackSend(channel: "#team1-dependency_check", message: "Number of outdated dependencies found in project ${npm}: ${result.size()}.")
@@ -78,10 +78,10 @@ pipeline {
         //     steps {
         //         echo "Auditing repositories..."
         //         script {
-        //             env.node_projects.tokenize(",").each { npm -> 
+        //             env.node_projects.tokenize(",").each { npm ->
         //                 echo "Auditing ${npm}..."
         //                 dir("${npm}") {
-        //                     sh "npm audit --json > ../npm_audit_${npm}.json || true" 
+        //                     sh "npm audit --json > ../npm_audit_${npm}.json || true"
         //                     def result = readJSON(file: "../npm_audit_${npm}.json")
         //                     slackSend(channel: "#team1-dependency_check", color: "good", message: "- ${npm} - ${result.metadata.vulnerabilities.total} vulnerabilities found (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info).")
         //                 }
@@ -92,9 +92,8 @@ pipeline {
     }
     post {
         always {
-            // cleanWs()
-            echo "Finished."
+            cleanWs(patterns:[[pattern: "/logs/", type: "EXCLUDE"]])
         }
     }
-        
+
 }
