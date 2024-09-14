@@ -33,10 +33,10 @@ pipeline {
                         echo "Checking ${project}..."
 
                         dir("${project}") {
-                            sh "npm outdated --json > ../logs/${BUILD_NUMBER}/npm_outdated_${project}.json || true"
-                            def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/npm_outdated_${project}.json")
-                            sh "npm audit --json > ../logs/${BUILD_NUMBER}/npm_audit_${project}.json || true"
-                            def audit_output = readJSON(file: "../logs/${BUILD_NUMBER}/npm_audit_${project}.json")
+                            sh "npm outdated --json > ../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json || true"
+                            def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json.json")
+                            sh "npm audit --json > ../logs/${BUILD_NUMBER}/${project}_vulnerabilities.json || true"
+                            def audit_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_vulnerabilities.json")
                             slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}")
                             slackSend(channel: "#team1-dependency_check", message: "- ${project} - Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
                         }
