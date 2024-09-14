@@ -46,7 +46,8 @@ pipeline {
                         echo "Checking ${npm}..."
                         dir("${npm}") {
                             def output = sh "npm outdated || true" 
-                            slackSend(channel: "#team1-dependency_check", message: "${output}")
+                            echo "${output}"
+                            // slackSend(channel: "#team1-dependency_check", message: "${output}")
                         }
                     }
                 }
