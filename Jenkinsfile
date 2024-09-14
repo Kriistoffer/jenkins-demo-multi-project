@@ -32,8 +32,8 @@ pipeline {
                         echo "Checking ${project}..."
 
                         dir("${project}") {
-                            sh "npm outdated --json > ../npm_outdated_${project}.json || true"
-                            def oudated_output = readJSON(file: "../npm_outdated_${project}.json")
+                            sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
+                            def outdated_output = readJSON(file: "../npm_outdated_${npm}.json")
                             sh "npm audit --json > ../npm_audit_${project}.json || true"
                             def audit_output = readJSON(file: "../npm_audit_${project}.json")
                             slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}")
@@ -64,10 +64,10 @@ pipeline {
         //             env.node_projects.tokenize(",").each { npm -> 
         //                 echo "Checking ${npm}..."
         //                 dir("${npm}") {
-        //                     sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
-        //                     def result = readJSON(file: "../npm_outdated_${npm}.json")
-        //                     // slackSend(channel: "#team1-dependency_check", message: "Number of outdated dependencies found in project ${npm}: ${result.size()}.")
-        //                     slackSend(channel: "#team1-dependency_check", message: "- ${npm} - Outdated dependencies: ${result.size()}")
+                            sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
+                            def result = readJSON(file: "../npm_outdated_${npm}.json")
+                            slackSend(channel: "#team1-dependency_check", message: "- ${npm} - Outdated dependencies: ${result.size()}")
+        //                     slackSend(channel: "#team1-dependency_check", message: "Number of outdated dependencies found in project ${npm}: ${result.size()}.")
         //                 }
         //             }
         //         }
