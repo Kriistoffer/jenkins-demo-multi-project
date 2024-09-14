@@ -92,7 +92,8 @@ pipeline {
     }
     post {
         always {
-            cleanWs(patterns:[[pattern: "**/logs/**", type: "EXCLUDE"]])
+            cleanWs(patterns: [[pattern: "**/logs/**", type: 'EXCLUDE'],
+                               [pattern: "**/node_modules/**", type: 'INCLUDE']])
         }
     }
 
