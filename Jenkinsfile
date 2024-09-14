@@ -13,13 +13,13 @@ pipeline {
             steps {
                 echo "Building..."
                 script {
-                    env.node_projects.tokenize(",").each { npm ->
-                        echo "Installing ${npm} now..."
-                        sh "mkdir -p ${npm}"
-                        dir("${npm}") {
+                    env.node_projects.tokenize(",").each { project ->
+                        echo "Installing ${project} now..."
+                        sh "mkdir -p ${project}"
+                        dir("${project}") {
                             sh "npm install"
                         }
-                        echo "Finished installing ${npm}."
+                        echo "Finished installing ${project}."
                     }
                 }
             }
@@ -93,7 +93,8 @@ pipeline {
     post {
         always {
             // cleanWs(patterns: [[pattern: "**/logs/**", type: 'EXCLUDE']])
-            cleanWs()
+            // cleanWs()
+            echo "Finished running pipeline."
         }
     }
 
