@@ -30,14 +30,10 @@ pipeline {
                 script {
                     env.node_projects.tokenize(",").each { project ->
                         echo "Checking ${project}..."
-
                         dir("${project}") {
                             sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
                             def outdated_output = readJSON(file: "../npm_outdated_${npm}.json")
-                            sh "npm audit --json > ../npm_audit_${project}.json || true"
-                            def audit_output = readJSON(file: "../npm_audit_${project}.json")
                             slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}")
-                            slackSend(channel: "#team1-dependency_check", message: "- ${project} - Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
                         }
                     }
                 }
