@@ -95,7 +95,7 @@ pipeline {
             // cleanWs(patterns: [[pattern: "**/logs/**", type: 'EXCLUDE']])
             // cleanWs()
             echo "Finished running pipeline."
-            echo "Complete logs available at ${BUILD_URL}"
+            slackSend(channel: "#team1-dependency_check", color: good, message: "Complete logs available at ${BUILD_URL}execution/node/3/ws/logs/${BUILD_NUMBER}")
         }
     }
 
