@@ -46,8 +46,8 @@ pipeline {
                         echo "Checking ${npm}..."
                         dir("${npm}") {
                             sh "npm outdated > ../npm_outdated_${npm}.txt || true" 
-                            def result = readFile(file: "../npm_outdated_${npm}.txt")
-                            echo "${result}"
+                            // def result = readFile(file: "../npm_outdated_${npm}.txt")
+                            // echo "${result}"
                             // slackSend(channel: "#team1-dependency_check", message: "${output}")
                         }
                     }
@@ -73,7 +73,8 @@ pipeline {
     }
     post {
         always {
-            cleanWs()
+            // cleanWs()
+            echo "Complete."
         }
     }
         
