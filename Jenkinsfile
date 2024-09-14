@@ -24,6 +24,25 @@ pipeline {
                 }
             }
         }
+        stage("Node: version and audit check") {
+            steps {
+                echo "Auditing and checking dependency versions..."
+                script {
+                    env.node_projects.tokenize(",").each { project ->
+                        echo "Checking ${project}..."
+
+                        dir("${project}") {
+                            sh "npm outdated --json > ../npm_outdated_${project}.json || true"
+                            def oudated_output = readJSON(file: "../npm_outdated_${project}.json")
+                            sh "npm audit --json > ../npm_audit_${project}.json || true"
+                            def audit_output = readJSON(file: "../npm_audit_${project}.json")
+                            slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}")
+                            slackSend(channel: "#team1-dependency_check", message: "- ${project} - Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
+                        }
+                    }
+                }
+            }
+        }
         // stage("Build dotnet based repositories") {
         //     steps {
         //         echo "Building..."
@@ -38,37 +57,37 @@ pipeline {
         //         }
         //     }
         // }
-        stage("Node: dependency version check") {
-            steps {
-                echo "Checking versions..."
-                script {
-                    env.node_projects.tokenize(",").each { npm -> 
-                        echo "Checking ${npm}..."
-                        dir("${npm}") {
-                            sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
-                            def result = readJSON(file: "../npm_outdated_${npm}.json")
-                            // slackSend(channel: "#team1-dependency_check", message: "Number of outdated dependencies found in project ${npm}: ${result.size()}.")
-                            slackSend(channel: "#team1-dependency_check", message: "- ${npm} - Outdated dependencies: ${result.size()}")
-                        }
-                    }
-                }
-            }
-        }
-        stage("Node: audit check") {
-            steps {
-                echo "Auditing repositories..."
-                script {
-                    env.node_projects.tokenize(",").each { npm -> 
-                        echo "Auditing ${npm}..."
-                        dir("${npm}") {
-                            sh "npm audit --json > ../npm_audit_${npm}.json || true" 
-                            def result = readJSON(file: "../npm_audit_${npm}.json")
-                            slackSend(channel: "#team1-dependency_check", color: "good", message: "- ${npm} - ${result.metadata.vulnerabilities.total} vulnerabilities found (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info).")
-                        }
-                    }
-                }
-            }
-        }
+        // stage("Node: dependency version check") {
+        //     steps {
+        //         echo "Checking versions..."
+        //         script {
+        //             env.node_projects.tokenize(",").each { npm -> 
+        //                 echo "Checking ${npm}..."
+        //                 dir("${npm}") {
+        //                     sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
+        //                     def result = readJSON(file: "../npm_outdated_${npm}.json")
+        //                     // slackSend(channel: "#team1-dependency_check", message: "Number of outdated dependencies found in project ${npm}: ${result.size()}.")
+        //                     slackSend(channel: "#team1-dependency_check", message: "- ${npm} - Outdated dependencies: ${result.size()}")
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // stage("Node: audit check") {
+        //     steps {
+        //         echo "Auditing repositories..."
+        //         script {
+        //             env.node_projects.tokenize(",").each { npm -> 
+        //                 echo "Auditing ${npm}..."
+        //                 dir("${npm}") {
+        //                     sh "npm audit --json > ../npm_audit_${npm}.json || true" 
+        //                     def result = readJSON(file: "../npm_audit_${npm}.json")
+        //                     slackSend(channel: "#team1-dependency_check", color: "good", message: "- ${npm} - ${result.metadata.vulnerabilities.total} vulnerabilities found (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info).")
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
     post {
         always {
