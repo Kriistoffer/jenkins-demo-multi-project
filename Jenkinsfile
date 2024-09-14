@@ -38,23 +38,23 @@ pipeline {
         //         }
         //     }
         // }
-        stage("Dependency version check") {
+        stage("Node: dependency version check") {
             steps {
                 echo "Checking versions..."
                 script {
                     env.node_projects.tokenize(",").each { npm -> 
                         echo "Checking ${npm}..."
                         dir("${npm}") {
-                            sh "npm outdated > ../npm_outdated_${npm}.txt || true" 
-                            // def result = readFile(file: "../npm_outdated_${npm}.txt")
+                            sh "npm outdated --json > ../npm_outdated_${npm}.json || true" 
+                            def result = readJSON(file: "../npm_outdated_${npm}.json")
                             // echo "${result}"
-                            // slackSend(channel: "#team1-dependency_check", message: "${output}")
+                            slackSend(channel: "#team1-dependency_check", message: "${output}")
                         }
                     }
                 }
             }
         }
-        stage("Audit check") {
+        stage("Node: audit check") {
             steps {
                 echo "Auditing repositories..."
                 script {
@@ -63,7 +63,6 @@ pipeline {
                         dir("${npm}") {
                             sh "npm audit --json > ../npm_audit_${npm}.json || true" 
                             def result = readJSON(file: "../npm_audit_${npm}.json")
-                            echo "Number of vulnerabilities found in project '${npm}': ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info)."
                             slackSend(channel: "#team1-dependency_check", color: "good", message: "Number of vulnerabilities found in project '${npm}': ${result.metadata.vulnerabilities.total} (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info).")
                         }
                     }
@@ -73,8 +72,7 @@ pipeline {
     }
     post {
         always {
-            // cleanWs()
-            echo "Complete."
+            cleanWs()
         }
     }
         
