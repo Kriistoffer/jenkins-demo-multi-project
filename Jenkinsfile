@@ -69,6 +69,7 @@ pipeline {
     }
     post {
         always {
+            slackSend(channel: "#team1-dependency_check", message: "Sent from Jenkins!")
             cleanWs()
         }
     }
