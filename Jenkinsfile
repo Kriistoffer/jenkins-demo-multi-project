@@ -67,8 +67,8 @@ pipeline {
         // }
     }
     post {
-        def now = new Date()
         success {
+            def now = new Date()
             slackSend(channel: "#team1-dependency_check", color: "good", message: "${JOB_NAME} has finished running at ${now.format("yyMMdd-HH:mm", TimeZone.getTimeZone("GMT+2"))}. Logs available at ${BUILD_URL}execution/node/3/ws/logs/${BUILD_NUMBER}")
         }
         failure {
