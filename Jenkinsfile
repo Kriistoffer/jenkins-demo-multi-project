@@ -20,6 +20,7 @@ pipeline {
                             sh "npm install"
                         }
                         echo "Finished installing ${project}."
+                        sh "dotnet"
                     }
                 }
             }
@@ -33,7 +34,6 @@ pipeline {
                         echo "Checking ${project}..."
 
                         dir("${project}") {
-                            //Outdated check
                             sh "npm outdated --json > ../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json || true"
                             def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json")
 
@@ -41,10 +41,9 @@ pipeline {
                             sh "npm outdated > ../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.txt || true"
                             sh "npm audit > ../logs/${BUILD_NUMBER}/${project}_vulnerabilities.txt || true"
                             
-                            //Audit check
                             sh "npm audit --json > ../logs/${BUILD_NUMBER}/${project}_vulnerabilities.json || true"
                             def audit_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_vulnerabilities.json")
-                            //Posting all results to slack
+
                             slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}. Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
                         }
                     }
@@ -68,4 +67,4 @@ pipeline {
         }
     }
 
-}}
+}
