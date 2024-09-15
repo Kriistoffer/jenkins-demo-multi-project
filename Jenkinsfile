@@ -12,10 +12,7 @@ pipeline {
         stage("Build node based repositories") {
             steps {
                 script {
-                    def now = new Date()
-                    slackSend(channel: "#team1-dependency_check", message: "${JOB_NAME} has begun running at ${now.format("yyMMdd-HH:mm", TimeZone.getTimeZone("GMT+2"))}, build number ${BUILD_NUMBER}.")
                     echo "Building..."
-
                     env.node_projects.tokenize(",").each { project ->
                         echo "Installing ${project} now..."
                         sh "mkdir -p ${project}"
@@ -70,8 +67,9 @@ pipeline {
         // }
     }
     post {
+        def now = new Date()
         success {
-            slackSend(channel: "#team1-dependency_check", color: "good", message: "${JOB_NAME} has finished running. Logs available at ${BUILD_URL}execution/node/3/ws/logs/${BUILD_NUMBER}")
+            slackSend(channel: "#team1-dependency_check", color: "good", message: "${JOB_NAME} has finished running at ${now.format("yyMMdd-HH:mm", TimeZone.getTimeZone("GMT+2"))}. Logs available at ${BUILD_URL}execution/node/3/ws/logs/${BUILD_NUMBER}")
         }
         failure {
             slackSend(channel: "#team1-dependency_check", color: "bad", message: "Something has caused a failure when running ${JOB_NAME}.")
