@@ -51,20 +51,6 @@ pipeline {
                 }
             }
         }
-        // stage("Build dotnet based repositories") {
-        //     steps {
-        //         echo "Building..."
-        //         script {
-        //             env.dotnet_projects.tokenize(",").each { dotnet ->
-        //                 echo "Starting with repository ${dotnet} now..."
-        //                 sh "mkdir -p ${dotnet}"
-        //                 dir("${dotnet}") {
-        //                     sh "nuget install packages.config"
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
     }
     post {
         success {
@@ -74,13 +60,12 @@ pipeline {
             }
         }
         failure {
-            slackSend(channel: "#team1-dependency_check", color: "bad", message: "Something has caused a failure when running ${JOB_NAME}.")
+            slackSend(channel: "#team1-dependency_check", color: "bad", message: "Something has caused a failure when running ${JOB_NAME} at ${now.format("yyMMdd-HH:mm", TimeZone.getTimeZone("GMT+2"))}. The failed build can be found here: ${BUILD_URL}")
         }
         always {
-            // cleanWs(patterns: [[pattern: "**/logs/**", type: 'EXCLUDE']])
             // cleanWs()
             echo "Finished running."
         }
     }
 
-}
+}}
