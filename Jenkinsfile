@@ -14,7 +14,7 @@ pipeline {
                 echo "Building..."
                 script {
                     def now = new Date()
-                    now = now.format("yyMMdd.HHmm", TimeZone.getTimeZone("GMT+2"))
+                    now = now.format("yyMMdd-HH:mm", TimeZone.getTimeZone("GMT+2"))
                     echo "${now}"
                     env.node_projects.tokenize(",").each { project ->
                         echo "Installing ${project} now..."
