@@ -13,6 +13,8 @@ pipeline {
             steps {
                 echo "Building..."
                 script {
+                    def now = new Date()
+                    echo "${now}"
                     env.node_projects.tokenize(",").each { project ->
                         echo "Installing ${project} now..."
                         sh "mkdir -p ${project}"
@@ -65,44 +67,13 @@ pipeline {
         //         }
         //     }
         // }
-        // stage("Node: dependency version check") {
-        //     steps {
-        //         echo "Checking versions..."
-        //         script {
-        //             env.node_projects.tokenize(",").each { npm ->
-        //                 echo "Checking ${npm}..."
-        //                 dir("${npm}") {
-        //                    sh "npm outdated --json > ../npm_outdated_${npm}.json || true"
-        //                    def result = readJSON(file: "../npm_outdated_${npm}.json")
-        //                    slackSend(channel: "#team1-dependency_check", message: "- ${npm} - Outdated dependencies: ${result.size()}")
-        //                    slackSend(channel: "#team1-dependency_check", message: "Number of outdated dependencies found in project ${npm}: ${result.size()}.")
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // stage("Node: audit check") {
-        //     steps {
-        //         echo "Auditing repositories..."
-        //         script {
-        //             env.node_projects.tokenize(",").each { npm ->
-        //                 echo "Auditing ${npm}..."
-        //                 dir("${npm}") {
-        //                     sh "npm audit --json > ../npm_audit_${npm}.json || true"
-        //                     def result = readJSON(file: "../npm_audit_${npm}.json")
-        //                     slackSend(channel: "#team1-dependency_check", color: "good", message: "- ${npm} - ${result.metadata.vulnerabilities.total} vulnerabilities found (${result.metadata.vulnerabilities.critical} critical, ${result.metadata.vulnerabilities.high} high, ${result.metadata.vulnerabilities.moderate} moderate, ${result.metadata.vulnerabilities.low} low, and ${result.metadata.vulnerabilities.info} info).")
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
     }
     post {
         success {
             slackSend(channel: "#team1-dependency_check", color: "good", message: "${JOB_NAME} has finished running. Logs available at ${BUILD_URL}execution/node/3/ws/logs/${BUILD_NUMBER}")
         }
         failure {
-            slackSend(channel: "#team1-dependency_check", color: "bad", message: "Something caused a failure when running ${JOB_NAME}.")
+            slackSend(channel: "#team1-dependency_check", color: "bad", message: "Something has caused a failure when running ${JOB_NAME}.")
         }
         always {
             // cleanWs(patterns: [[pattern: "**/logs/**", type: 'EXCLUDE']])
