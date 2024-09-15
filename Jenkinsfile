@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     def now = new Date()
-                    slackSend(channel: "#team1-dependency_check", message: "${JOB_NAME} has begun running at ${now.format("yyMMdd-HH:mm", TimeZone.getTimeZone("GMT+2"))}.")
+                    slackSend(channel: "#team1-dependency_check", message: "${JOB_NAME} has begun running at ${now.format("yyMMdd-HH:mm", TimeZone.getTimeZone("GMT+2"))}, build number ${BUILD_NUMBER}.")
                     echo "Building..."
 
                     env.node_projects.tokenize(",").each { project ->
