@@ -20,7 +20,6 @@ pipeline {
                             sh "npm install"
                         }
                         echo "Finished installing ${project}."
-                        sh "dotnet"
                     }
                 }
             }
