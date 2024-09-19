@@ -27,9 +27,9 @@ pipeline {
         stage("Node: version and audit check") {
             steps {
                 echo "Auditing and checking dependency versions..."
-                def workspace = WORKSPACE
-                sh "mkdir -p ${workspace}/logs/${BUILD_NUMBER}"
                 script {
+                    def workspace = WORKSPACE
+                    sh "mkdir -p ${workspace}/logs/${BUILD_NUMBER}"
                     env.node_projects.tokenize(",").each { project ->
                         echo "Checking ${project}..."
 
