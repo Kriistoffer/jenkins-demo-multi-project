@@ -27,21 +27,22 @@ pipeline {
         stage("Node: version and audit check") {
             steps {
                 echo "Auditing and checking dependency versions..."
-                sh "mkdir -p logs/${BUILD_NUMBER}"
+                def workspace = WORKSPACE
+                sh "mkdir -p ${workspace}/logs/${BUILD_NUMBER}"
                 script {
                     env.node_projects.tokenize(",").each { project ->
                         echo "Checking ${project}..."
 
                         dir("src/${project}") {
-                            sh "npm outdated --json > ../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json || true"
-                            def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json")
+                            sh "npm outdated --json > ${workspace}/logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json || true"
+                            def outdated_output = readJSON(file: "${workspace}/logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json")
 
                             //Format testing
-                            sh "npm outdated > ../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.txt || true"
-                            sh "npm audit > ../logs/${BUILD_NUMBER}/${project}_vulnerabilities.txt || true"
+                            sh "npm outdated > ${workspace}/logs/${BUILD_NUMBER}/${project}_outdated_dependencies.txt || true"
+                            sh "npm audit > ${workspace}/logs/${BUILD_NUMBER}/${project}_vulnerabilities.txt || true"
                             
-                            sh "npm audit --json > ../logs/${BUILD_NUMBER}/${project}_vulnerabilities.json || true"
-                            def audit_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_vulnerabilities.json")
+                            sh "npm audit --json > ${workspace}/logs/${BUILD_NUMBER}/${project}_vulnerabilities.json || true"
+                            def audit_output = readJSON(file: "${workspace}/logs/${BUILD_NUMBER}/${project}_vulnerabilities.json")
 
                             slackSend(channel: "#team1-dependency_check", message: "- ${project} - Outdated dependencies: ${outdated_output.size()}. Vulnerabilities found: ${audit_output.metadata.vulnerabilities.total}")
                         }
