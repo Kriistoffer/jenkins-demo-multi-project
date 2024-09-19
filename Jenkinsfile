@@ -15,8 +15,8 @@ pipeline {
                     echo "Building..."
                     env.node_projects.tokenize(",").each { project ->
                         echo "Installing ${project} now..."
-                        sh "mkdir -p ${project}"
-                        dir("${project}") {
+                        // sh "mkdir -p ${project}"
+                        dir("src/${project}") {
                             sh "npm install"
                         }
                         echo "Finished installing ${project}."
@@ -32,7 +32,7 @@ pipeline {
                     env.node_projects.tokenize(",").each { project ->
                         echo "Checking ${project}..."
 
-                        dir("${project}") {
+                        dir("src/${project}") {
                             sh "npm outdated --json > ../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json || true"
                             def outdated_output = readJSON(file: "../logs/${BUILD_NUMBER}/${project}_outdated_dependencies.json")
 
