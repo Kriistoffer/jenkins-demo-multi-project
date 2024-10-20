@@ -1,13 +1,9 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16-alpine'
-        }
+    agent any
+    tools {
+        nodejs "nodejs"
+        dotnetsdk "dotnet"
     }
-    // tools {
-    //     nodejs "nodejs"
-    //     dotnetsdk "dotnet"
-    // }
     environment {
         node_projects = "frontend-gui,frontend-components,frontend-admin"
         dotnet_projects = "jenkins-demo-backend"
