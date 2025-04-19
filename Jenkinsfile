@@ -3,7 +3,11 @@ pipeline {
 
     stages {
         stage("TESTING") {
-            def files = findFiles(glob: '**/appsettings.json')
+            steps {
+                script {
+                    def files = findFiles(glob: '**/appsettings.json')
+                }
+            }
         } 
     }
 }
