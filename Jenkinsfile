@@ -8,7 +8,10 @@ pipeline {
                     def files = findFiles(glob: '**/package-lock.json')
                     echo "Files: ${files}"
 
-                    echo "Parent: ${files[0].parent}"
+                    for (file in files) {
+                        parentDirectory = "/${file.path}" - "/${file.name}"
+                        echo "Parent directory: ${parentDirectory}"
+                    }
                 }
             }
         } 
