@@ -11,6 +11,7 @@ pipeline {
                     for (file in files) {
                         parentDirectory = "/${file.path}" - "/${file.name}"
                         echo "Parent directory: ${parentDirectory}"
+                        echo "Name: ${file.name}"
                     }
                 }
             }
