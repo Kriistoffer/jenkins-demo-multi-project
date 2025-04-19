@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     def files = findFiles(glob: '**/appsettings.json')
-                    echo "${files[0]}"
+                    echo "Name: ${files[0].name}"
                 }
             }
         } 
