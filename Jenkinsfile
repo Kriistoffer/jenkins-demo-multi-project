@@ -5,8 +5,8 @@ pipeline {
         stage("TESTING") {
             steps {
                 script {
-                    def files = findFiles(glob: '**/appsettings.json')
-                    echo "Path: ${files[0].path}"
+                    def files = findFiles(glob: '**/package-lock.json')
+                    echo "Files: ${files}"
                 }
             }
         } 
