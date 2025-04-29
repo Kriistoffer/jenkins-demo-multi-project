@@ -12,6 +12,7 @@ pipeline {
                         parentDirectory = "/${file.path}" - "/${file.name}"
                         echo "Parent directory: ${parentDirectory}"
                         echo "Name: ${file.name}"
+                        echo "Directory: ${file.directory}"
                     }
                 }
             }

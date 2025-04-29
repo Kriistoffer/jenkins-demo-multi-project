@@ -1,0 +1,15 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("SETUP") {
+
+        }
+
+        stage("NODE: VULNERABILITY CHECK") {
+
+        }
+
+        stage("DOTNET: VULNERABILITY CHECK")
+    }
+}
