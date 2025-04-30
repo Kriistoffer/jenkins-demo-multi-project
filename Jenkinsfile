@@ -9,7 +9,7 @@ pipeline {
                     echo "Files: ${files}"
 
                     for (file in files) {
-                        parentDirectory = "/${file.path}" - "/${file.name}"
+                        parentDirectory = "${file.path}" - "/${file.name}"
                         echo "Parent directory: ${parentDirectory}"
                         echo "Name: ${file.name}"
                         echo "Directory: ${file.directory}"
