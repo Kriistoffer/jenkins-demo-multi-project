@@ -15,7 +15,7 @@ pipeline {
                         echo "Directory: ${file.directory}"
                     }
 
-                    def files2 = findFiles(glob: '**/.git')
+                    def files2 = findFiles(glob: '**/HEAD')
                     echo "Files(git): ${files2}"
                 }
             }
